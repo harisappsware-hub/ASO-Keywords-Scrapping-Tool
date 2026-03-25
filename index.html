@@ -3,149 +3,174 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ASO Scout — Keyword Intelligence Tool</title>
+  <title>ASO Keyword Scraper — Real Play Store Keywords</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 </head>
 <body>
 
-  <!-- ======== HEADER ======== -->
-  <header class="site-header">
+  <!-- HEADER -->
+  <header class="header">
     <div class="header-inner">
       <div class="logo">
-        <span class="logo-icon">◈</span>
-        <span class="logo-text">ASO<strong>Scout</strong></span>
+        <span class="logo-mark">⬡</span>
+        <span class="logo-name">KeywordSpy<em>ASO</em></span>
       </div>
-      <p class="tagline">App Store Keyword Intelligence Platform</p>
+      <span class="header-badge">Real Play Store Scraper</span>
     </div>
   </header>
 
-  <!-- ======== MAIN CONTENT ======== -->
-  <main class="main-container">
+  <!-- HERO / INPUT SECTION -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title">Extract Real App Keywords</h1>
+      <p class="hero-sub">Paste any Google Play Store app link — we'll extract every keyword from its Title, Short Description & Long Description.</p>
 
-    <!-- Search Section -->
-    <section class="search-section">
-      <h1 class="section-title">Analyze App Keywords</h1>
-      <p class="section-desc">Enter an app name or package ID to extract ASO keyword insights by market.</p>
-
-      <div class="search-card">
-        <!-- App Input -->
-        <div class="input-group">
-          <label for="appInput" class="input-label">App Name / Package ID</label>
+      <div class="search-box">
+        <div class="search-input-wrap">
+          <span class="input-icon">🔗</span>
           <input
-            type="text"
-            id="appInput"
-            class="input-field"
-            placeholder="e.g. Spotify  or  com.spotify.music"
+            type="url"
+            id="appUrl"
+            class="url-input"
+            placeholder="https://play.google.com/store/apps/details?id=com.spotify.music"
             autocomplete="off"
+            spellcheck="false"
           />
+          <button id="clearBtn" class="clear-btn" title="Clear">✕</button>
         </div>
-
-        <!-- Country Selector -->
-        <div class="input-group">
-          <label for="countrySelect" class="input-label">Target Market</label>
-          <select id="countrySelect" class="input-field select-field">
-            <option value="">— Select Country —</option>
-          </select>
-        </div>
-
-        <!-- Platform Selector -->
-        <div class="input-group">
-          <label for="platformSelect" class="input-label">Platform</label>
-          <select id="platformSelect" class="input-field select-field">
-            <option value="ios">iOS (App Store)</option>
-            <option value="android">Android (Play Store)</option>
-          </select>
-        </div>
-
-        <!-- Search Button -->
-        <button id="searchBtn" class="btn-search">
-          <span class="btn-label">Analyze Keywords</span>
-          <span class="btn-icon">→</span>
+        <button id="scrapeBtn" class="scrape-btn">
+          <span id="btnText">Extract Keywords</span>
+          <span class="btn-arrow">→</span>
         </button>
       </div>
-    </section>
 
-    <!-- Loader -->
-    <div id="loader" class="loader hidden">
-      <div class="loader-bar">
-        <div class="loader-fill"></div>
+      <div class="example-links">
+        <span class="ex-label">Try an example:</span>
+        <button class="ex-link" data-url="https://play.google.com/store/apps/details?id=com.spotify.music">Spotify</button>
+        <button class="ex-link" data-url="https://play.google.com/store/apps/details?id=com.whatsapp">WhatsApp</button>
+        <button class="ex-link" data-url="https://play.google.com/store/apps/details?id=com.instagram.android">Instagram</button>
+        <button class="ex-link" data-url="https://play.google.com/store/apps/details?id=com.google.android.youtube">YouTube</button>
       </div>
-      <p class="loader-text">Scraping keyword data<span class="dots"></span></p>
+    </div>
+  </section>
+
+  <!-- LOADER -->
+  <div id="loader" class="loader hidden">
+    <div class="loader-ring"></div>
+    <p id="loaderText" class="loader-text">Fetching app data…</p>
+  </div>
+
+  <!-- ERROR -->
+  <div id="errorBox" class="error-box hidden">
+    <span class="error-icon">⚠</span>
+    <span id="errorMsg">Something went wrong.</span>
+    <button id="retryBtn" class="retry-btn">Retry</button>
+  </div>
+
+  <!-- RESULTS -->
+  <section id="results" class="results hidden">
+
+    <!-- App Meta Card -->
+    <div class="app-meta-card" id="appMetaCard">
+      <img id="appIcon" class="app-icon" src="" alt="App Icon" onerror="this.style.display='none'" />
+      <div class="app-meta-info">
+        <h2 id="appTitle" class="app-title-display">—</h2>
+        <p id="appDev" class="app-dev">—</p>
+        <div class="app-badges">
+          <span id="appRating" class="meta-badge">⭐ —</span>
+          <span id="appInstalls" class="meta-badge">📥 —</span>
+          <span id="appCategory" class="meta-badge">🏷 —</span>
+        </div>
+      </div>
     </div>
 
-    <!-- Results Section -->
-    <section id="resultsSection" class="results-section hidden">
+    <!-- Source Stats -->
+    <div class="source-stats" id="sourceStats">
+      <div class="stat-card">
+        <span class="stat-num" id="statTitle">0</span>
+        <span class="stat-label">Title Keywords</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statShort">0</span>
+        <span class="stat-label">Short Desc Keywords</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num" id="statLong">0</span>
+        <span class="stat-label">Long Desc Keywords</span>
+      </div>
+      <div class="stat-card highlight">
+        <span class="stat-num" id="statTotal">0</span>
+        <span class="stat-label">Unique Keywords</span>
+      </div>
+    </div>
 
-      <!-- Summary Strip -->
-      <div class="summary-strip">
-        <div class="summary-item">
-          <span class="summary-label">App</span>
-          <span class="summary-value" id="summaryApp">—</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Market</span>
-          <span class="summary-value" id="summaryCountry">—</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Keywords Found</span>
-          <span class="summary-value" id="summaryCount">—</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Ranked Keywords</span>
-          <span class="summary-value" id="summaryRanked">—</span>
+    <!-- Controls -->
+    <div class="controls-bar">
+      <div class="controls-left">
+        <input type="text" id="filterInput" class="filter-input" placeholder="🔍  Filter keywords…" />
+        <div class="source-filters">
+          <button class="src-filter active" data-src="all">All</button>
+          <button class="src-filter" data-src="title">Title</button>
+          <button class="src-filter" data-src="short">Short Desc</button>
+          <button class="src-filter" data-src="long">Long Desc</button>
         </div>
       </div>
+      <div class="controls-right">
+        <select id="sortSelect" class="sort-select">
+          <option value="freq">Sort: Frequency ↓</option>
+          <option value="alpha">Sort: A → Z</option>
+          <option value="len">Sort: Length ↓</option>
+        </select>
+        <button id="exportBtn" class="export-btn">⬇ CSV</button>
+      </div>
+    </div>
 
-      <!-- Table Controls -->
-      <div class="table-controls">
-        <input type="text" id="kwSearch" class="kw-search" placeholder="🔍 Filter keywords..." />
-        <div class="sort-group">
-          <label for="sortBy" class="sort-label">Sort by:</label>
-          <select id="sortBy" class="sort-select">
-            <option value="traffic">Traffic</option>
-            <option value="ranking">Ranking</option>
-            <option value="frequency">Frequency</option>
-            <option value="difficulty">Difficulty</option>
-          </select>
+    <!-- Keyword Table -->
+    <div class="table-wrap">
+      <table class="kw-table" id="kwTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Keyword</th>
+            <th>Found In</th>
+            <th>Frequency</th>
+            <th>Word Length</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody id="kwBody"></tbody>
+      </table>
+      <div id="noRows" class="no-rows hidden">No keywords match your filter.</div>
+    </div>
+
+    <!-- Raw Text Preview -->
+    <div class="raw-section">
+      <div class="raw-toggle">
+        <span class="raw-title">📄 Raw Text Preview</span>
+        <button id="toggleRaw" class="toggle-btn">Show</button>
+      </div>
+      <div id="rawContent" class="raw-content hidden">
+        <div class="raw-block">
+          <p class="raw-label">TITLE</p>
+          <p id="rawTitle" class="raw-text">—</p>
         </div>
-        <button id="exportBtn" class="btn-export">⬇ Export CSV</button>
+        <div class="raw-block">
+          <p class="raw-label">SHORT DESCRIPTION</p>
+          <p id="rawShort" class="raw-text">—</p>
+        </div>
+        <div class="raw-block">
+          <p class="raw-label">LONG DESCRIPTION (first 600 chars)</p>
+          <p id="rawLong" class="raw-text">—</p>
+        </div>
       </div>
+    </div>
 
-      <!-- Keyword Table -->
-      <div class="table-wrapper">
-        <table class="kw-table" id="kwTable">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Keyword</th>
-              <th>Language</th>
-              <th>Frequency</th>
-              <th>Difficulty</th>
-              <th>Traffic / Vol.</th>
-              <th>Ranking</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="kwTableBody">
-            <!-- Rows injected by JS -->
-          </tbody>
-        </table>
-      </div>
+  </section>
 
-      <!-- No Results -->
-      <div id="noResults" class="no-results hidden">
-        No keywords match your filter.
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- ======== FOOTER ======== -->
-  <footer class="site-footer">
-    <p>ASO Scout · Keyword Intelligence · Data is simulated for demo purposes</p>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>KeywordSpy ASO · Extracts real keywords from Google Play Store · Built with HTML + CSS + JS</p>
   </footer>
 
   <script src="script.js"></script>
