@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASO Scout — Keyword Intelligence Tool</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ======== HEADER ======== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">◈</span>
+        <span class="logo-text">ASO<strong>Scout</strong></span>
+      </div>
+      <p class="tagline">App Store Keyword Intelligence Platform</p>
+    </div>
+  </header>
+
+  <!-- ======== MAIN CONTENT ======== -->
+  <main class="main-container">
+
+    <!-- Search Section -->
+    <section class="search-section">
+      <h1 class="section-title">Analyze App Keywords</h1>
+      <p class="section-desc">Enter an app name or package ID to extract ASO keyword insights by market.</p>
+
+      <div class="search-card">
+        <!-- App Input -->
+        <div class="input-group">
+          <label for="appInput" class="input-label">App Name / Package ID</label>
+          <input
+            type="text"
+            id="appInput"
+            class="input-field"
+            placeholder="e.g. Spotify  or  com.spotify.music"
+            autocomplete="off"
+          />
+        </div>
+
+        <!-- Country Selector -->
+        <div class="input-group">
+          <label for="countrySelect" class="input-label">Target Market</label>
+          <select id="countrySelect" class="input-field select-field">
+            <option value="">— Select Country —</option>
+          </select>
+        </div>
+
+        <!-- Platform Selector -->
+        <div class="input-group">
+          <label for="platformSelect" class="input-label">Platform</label>
+          <select id="platformSelect" class="input-field select-field">
+            <option value="ios">iOS (App Store)</option>
+            <option value="android">Android (Play Store)</option>
+          </select>
+        </div>
+
+        <!-- Search Button -->
+        <button id="searchBtn" class="btn-search">
+          <span class="btn-label">Analyze Keywords</span>
+          <span class="btn-icon">→</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Loader -->
+    <div id="loader" class="loader hidden">
+      <div class="loader-bar">
+        <div class="loader-fill"></div>
+      </div>
+      <p class="loader-text">Scraping keyword data<span class="dots"></span></p>
+    </div>
+
+    <!-- Results Section -->
+    <section id="resultsSection" class="results-section hidden">
+
+      <!-- Summary Strip -->
+      <div class="summary-strip">
+        <div class="summary-item">
+          <span class="summary-label">App</span>
+          <span class="summary-value" id="summaryApp">—</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Market</span>
+          <span class="summary-value" id="summaryCountry">—</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Keywords Found</span>
+          <span class="summary-value" id="summaryCount">—</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">Ranked Keywords</span>
+          <span class="summary-value" id="summaryRanked">—</span>
+        </div>
+      </div>
+
+      <!-- Table Controls -->
+      <div class="table-controls">
+        <input type="text" id="kwSearch" class="kw-search" placeholder="🔍 Filter keywords..." />
+        <div class="sort-group">
+          <label for="sortBy" class="sort-label">Sort by:</label>
+          <select id="sortBy" class="sort-select">
+            <option value="traffic">Traffic</option>
+            <option value="ranking">Ranking</option>
+            <option value="frequency">Frequency</option>
+            <option value="difficulty">Difficulty</option>
+          </select>
+        </div>
+        <button id="exportBtn" class="btn-export">⬇ Export CSV</button>
+      </div>
+
+      <!-- Keyword Table -->
+      <div class="table-wrapper">
+        <table class="kw-table" id="kwTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Keyword</th>
+              <th>Language</th>
+              <th>Frequency</th>
+              <th>Difficulty</th>
+              <th>Traffic / Vol.</th>
+              <th>Ranking</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="kwTableBody">
+            <!-- Rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- No Results -->
+      <div id="noResults" class="no-results hidden">
+        No keywords match your filter.
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="site-footer">
+    <p>ASO Scout · Keyword Intelligence · Data is simulated for demo purposes</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
